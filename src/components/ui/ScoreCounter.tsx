@@ -20,7 +20,7 @@ export function ScoreCounter({ value, digits = 4, className = '', label = 'Score
           const lead = str.slice(0, i).split('').every((c) => c === '0') && d === '0' && i < str.length - 1
           // Leading zeros keep the width stable but read as faint ruled boxes, not digits.
           return (
-            <span key={i} className={`roll-col ${lead ? 'text-paper-shade' : ''}`} style={{ transform: `translateY(${-Number(d)}em)`, transitionDelay: `${(str.length - i) * 60}ms` }}>
+            <span key={i} className={`roll-col ${lead ? 'opacity-0' : ''}`} style={{ transform: `translateY(${-Number(d)}em)`, transitionDelay: `${(str.length - i) * 60}ms` }}>
               {'0123456789'.split('').map((n) => <span key={n}>{n}</span>)}
             </span>
           )

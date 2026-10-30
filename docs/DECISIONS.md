@@ -38,3 +38,12 @@ One line per non-obvious choice. Newest at the bottom.
 - **Enrolment is local (zustand persist) until Phase 2** mirrors it server-side. Stores only the chosen handle, house and archetype.
 - **House flood uses the Web Animations API**, not Framer Motion: one effect didn't justify the dependency yet.
 - **Prettier config** (`semi: false, singleQuote, printWidth 140`) added to match the hand-written style.
+
+## Core game (playable loop, local-first)
+- **Re-prioritised on request: game before polish.** All four rounds + hub + finale are playable end to end in the browser. Scores live on the device (`sty-season`); the server-authoritative version (Supabase, anti-cheat, leaderboard) layers on next without changing round logic.
+- **Rounds in any order**; finale unlocks at 4/4. "Play another season" archives the run to local history (best season shown on the hub).
+- **Pure, tested round logic** in `src/game/` (quiz, hunt, football, dance, dean). Normalisation maxima come from the logic (`QUIZ_MAX`=2626, `HUNT_MAX`=2500, `FOOTBALL_MAX`=750, `DANCE_MAX`=2000), so the 0–1000 total stays honest.
+- **Football is 2D canvas, not Rapier 3D**: swipe vector scaled so a ~⅓-screen swipe reaches mid-goal; curve from path bulge; keeper reads you more each kick; tap-a-spot and arrow keys as alternatives.
+- **Dance beat is synthesised in WebAudio** (original loop, no files) and judged against `AudioContext.currentTime` minus output latency, never timers.
+- **Quiz facts** limited to ones I'm confident in; no film dialogue/lyrics. Content is easy to extend in `src/game/quiz.ts`.
+- **Dean verdicts are canned** (by score band) — also the future fallback for the AI Dean.

@@ -10,7 +10,7 @@ Full spec lives in the original build prompt; this file holds what you need ever
 - `npm run lint` / `npm run typecheck`
 - `npm run shots [-- gallery type home /any/path]`: Playwright screenshots → `shots/<name>-{phone,desktop}.png` (390×844, 1440×900). **Open them and critique after every visual change.**
 - `npm run posters`: re-render LCP/fallback posters from the 3D scenes into `public/posters/` (run after any scene change)
-- `node scripts/flow-enrol.mjs`: walk the enrol flow and screenshot each step (needs a dev server, `BASE_URL`)
+- `node scripts/flow-{enrol,quiz,hunt,football,dance,finale}.mjs`: play each flow end to end and screenshot it (needs a dev server, `BASE_URL`)
 - `npm run a11y`: axe + security-header checks (Playwright)
 - `npm run audit`: `npm audit` + client-bundle secret scan (needs a build)
 
@@ -67,7 +67,7 @@ No allocation in useFrame; dispose on unmount; instance repeats; one real-time s
 - Run the 5-check preflight before each public deploy; log in `docs/SECURITY.md`. Record non-obvious choices in `docs/DECISIONS.md`.
 
 ## Phases
-0 Foundations ✅ · 1 Hero corridor + TrophyViewer + enrol ✅ · 2 Quiz + Hunt + hub + finale + board + share (ship) ·
+0 Foundations ✅ · 1 Hero corridor + TrophyViewer + enrol ✅ · Core loop (4 rounds + hub + finale, local-first) ✅ · 2 Quiz + Hunt + hub + finale + board + share (ship) ·
 3 Football + Dance with input-log verification · 4 House War, duels, daily, streaks, locker, PWA · 5 Ceremony + AI Dean · 6 Polish & launch.
 Each phase ends deployable, with screenshots (≥3 critique rounds per hero scene/screen), acceptance checklist, security delta, perf numbers.
 

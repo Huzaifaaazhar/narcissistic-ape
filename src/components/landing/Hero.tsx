@@ -128,7 +128,7 @@ export function Hero() {
         </div>
 
         <div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 px-4 pb-[max(22px,env(safe-area-inset-bottom))]">
-          <Link href="/enrol" className="btn btn-block max-w-[360px]">
+          <Link href={enrolment ? '/season' : '/enrol'} className="btn btn-block max-w-[360px]">
             <span className="btn-face">
               <span className="btn-stub">
                 {enrolment ? <PlayIcon size={20} className="[--icon-accent:currentColor]" /> : <TrophyIcon size={22} className="[--icon-accent:var(--color-gold)] [--icon-paper:var(--color-red)]" />}

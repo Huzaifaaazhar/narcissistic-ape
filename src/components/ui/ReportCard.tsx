@@ -4,12 +4,14 @@ import { CheckIcon, LockIcon } from '@/components/icons'
 type Props = {
   /** Steps completed, including admission (so a fresh player is 1). */
   done: number
+  /** Exact completed step ids when rounds can be played in any order. */
+  doneIds?: readonly string[]
   /** Index of the step currently being played, if any. */
   current?: number
 }
 
 /** Season progress as a report card of ink stamps. Starts with admission stamped (endowed progress). */
-export function ReportCard({ done, current }: Props) {
+export function ReportCard({ done, current, doneIds }: Props) {
   const steps = copy.reportCard.steps
   return (
     <section aria-label={copy.reportCard.title} className="w-full">
@@ -25,7 +27,7 @@ export function ReportCard({ done, current }: Props) {
       </div>
       <ol className="mt-4 grid grid-cols-5 gap-1">
         {steps.map((s, i) => {
-          const isDone = i < done
+          const isDone = doneIds ? doneIds.includes(s.id) : i < done
           const isNow = current === i
           return (
             <li key={s.id} className="flex flex-col items-center gap-2 text-center">

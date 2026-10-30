@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 
-for (const path of ['/', '/enrol', '/privacy', '/credits', '/dev/gallery', '/nope-404']) {
+for (const path of ['/', '/enrol', '/season', '/play/quiz', '/play/hunt', '/play/football', '/play/dance', '/finale', '/privacy', '/credits', '/dev/gallery', '/nope-404']) {
   test(`axe: ${path} has no serious violations`, async ({ page }) => {
     await page.goto(path)
     await page.evaluate(() => document.fonts.ready)

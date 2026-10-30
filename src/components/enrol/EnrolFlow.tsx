@@ -301,13 +301,13 @@ function Approved({ enrolment, onEdit }: { enrolment: Enrolment; onEdit: () => v
             <TrophyViewer tier={tier} name={enrolment.nickname} sub={`${h.name} · Season one`} className="absolute inset-0" />
           )}
         </div>
-        <figcaption className="px-4 py-3 text-center text-[14px] text-cream-hi/85">{copy.enrol.trophyCaption}</figcaption>
+        <figcaption className="px-4 py-3 text-center text-[14px] text-cream-hi/85">{tier && tier !== 'poster' ? copy.enrol.trophyCaption : `To be engraved: ${enrolment.nickname}`}</figcaption>
       </figure>
 
       <div className="lg:col-start-1 lg:row-start-2 lg:self-start">
         <p className="mt-6 text-center text-[16px] text-ink lg:text-left">{copy.enrol.doneBody}</p>
         <div className="mt-6 flex flex-col items-center gap-3 lg:items-start">
-          <Link href="/" className="btn btn-block max-w-[400px]">
+          <Link href="/season" className="btn btn-block max-w-[400px]">
             <span className="btn-face">
               <span className="btn-stub">
                 <PlayIcon size={20} className="[--icon-accent:currentColor]" />

@@ -6,11 +6,13 @@ import { mkdir } from 'node:fs/promises'
 
 const PORT = process.env.PORT ?? '3125'
 const base = process.env.BASE_URL ?? `http://localhost:${PORT}`
-const JOBS = [
+const ONLY = process.argv.slice(2)
+const JOBS_ALL = [
   { name: 'corridor-portrait', path: '/dev/scenes/corridor?tier=high&freeze=1&p=0', viewport: { width: 390, height: 844 }, scale: 2 },
   { name: 'corridor-landscape', path: '/dev/scenes/corridor?tier=high&freeze=1&p=0', viewport: { width: 1440, height: 900 }, scale: 1.334 },
   { name: 'trophy-square', path: '/dev/scenes/trophy?freeze=1&name=Your%20name%20here&sub=Season%20one', viewport: { width: 600, height: 600 }, scale: 2 },
 ]
+const JOBS = ONLY.length ? JOBS_ALL.filter((j) => ONLY.includes(j.name)) : JOBS_ALL
 
 let server
 if (!process.env.BASE_URL) {
