@@ -88,7 +88,7 @@ export function HuntRound() {
   }
 
   const finish = () => {
-    record('hunt', score, `${firstTry}/${HUNT_CLUES} found first try · ${HUNT_HINTS - hintsLeft} hints`)
+    record('hunt', score, `${firstTry}/${HUNT_CLUES} found first try · ${HUNT_HINTS - hintsLeft} hints`, { firstTry, hints: HUNT_HINTS - hintsLeft })
     router.push('/season')
   }
 

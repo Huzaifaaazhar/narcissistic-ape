@@ -47,3 +47,11 @@ One line per non-obvious choice. Newest at the bottom.
 - **Dance beat is synthesised in WebAudio** (original loop, no files) and judged against `AudioContext.currentTime` minus output latency, never timers.
 - **Quiz facts** limited to ones I'm confident in; no film dialogue/lyrics. Content is easy to extend in `src/game/quiz.ts`.
 - **Dean verdicts are canned** (by score band) — also the future fallback for the AI Dean.
+
+## Retention & social without a backend
+- **Duels are link-encoded** (`/duel?c=` base64url of seed + name + house + total, Zod-validated, nickname re-sanitised, score clamped 0–1000). Links are editable, so duels are friendly bragging rights only and never feed a leaderboard; that waits for server-verified runs.
+- **Daily challenge** = a full season on seed `daily-YYYY-MM-DD` (local date), so everyone gets the same questions, clues, keeper and chart that day.
+- **Progress is local** (`sty-progress`): streak with one Sick Note per ISO week, XP → grade, 14 achievements, locker drops (70/25/5 with pity after 5 dry seasons). Awarded once per run (stored on the run) so a refresh can't double-award.
+- **Share card is drawn on a canvas** (1080×1350) from the sanitised nickname as pixels; native share sheet with the file when supported, download otherwise. The generic trophy plate is cropped out; the real name is printed below.
+- **PWA**: app manifest + hand-written service worker (cache-first for hashed static assets/posters/fonts/icons, network-first pages with an offline page, never `/api/*`). Install is offered only on the finale, after a win. Serwist skipped: one small worker didn't justify a build plugin on Turbopack.
+- **Haptics are gated on `navigator.userActivation`** so we never trigger Chrome's blocked-vibrate intervention.

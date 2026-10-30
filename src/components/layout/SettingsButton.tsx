@@ -1,16 +1,19 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { copy } from '@/config/copy'
+import { useShallow } from 'zustand/react/shallow'
 import { useSettings, type GraphicsPref } from '@/state/settings'
 import { Sheet } from '@/components/ui/Sheet'
 import { Button } from '@/components/ui/Button'
 import { SettingsIcon } from '@/components/icons'
 
-/** Gear button + settings sheet. Phase 1 ships the graphics preference; sound/haptics arrive with audio. */
+/** Gear button + settings sheet: sound, music, vibration, graphics quality. */
 export function SettingsButton({ className = '' }: { className?: string }) {
   const [open, setOpen] = useState(false)
   const graphics = useSettings((s) => s.graphics)
   const setGraphics = useSettings((s) => s.setGraphics)
+  const toggles = useSettings(useShallow((s) => ({ sound: s.sound, music: s.music, haptics: s.haptics })))
+  const toggle = useSettings((s) => s.toggle)
   const [reducedMotion, setReducedMotion] = useState(false)
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- reads a media query after mount
@@ -27,6 +30,23 @@ export function SettingsButton({ className = '' }: { className?: string }) {
         <SettingsIcon size={24} />
       </button>
       <Sheet open={open} onClose={() => setOpen(false)} title={copy.settings.title} seed="settings">
+        <ul className="mb-6 divide-y divide-paper-shade">
+          {(['sound', 'music', 'haptics'] as const).map((k) => (
+            <li key={k} className="flex min-h-14 items-center justify-between">
+              <span className="font-semibold text-navy" id={`set-${k}`}>{copy.settings.toggles[k]}</span>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={toggles[k]}
+                aria-labelledby={`set-${k}`}
+                onClick={() => toggle(k)}
+                className={`label min-h-11 min-w-16 rounded-pill px-3 text-[11px] font-bold ${toggles[k] ? 'bg-navy text-cream-hi' : 'border-2 border-navy text-navy'}`}
+              >
+                {toggles[k] ? copy.settings.on : copy.settings.off}
+              </button>
+            </li>
+          ))}
+        </ul>
         <fieldset>
           <legend className="label text-[12px] font-bold text-navy">{copy.settings.graphics}</legend>
           <div className="mt-3 grid grid-cols-3 gap-2" role="radiogroup">

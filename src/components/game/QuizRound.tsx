@@ -131,7 +131,7 @@ export function QuizRound() {
   }
 
   const finish = () => {
-    record('quiz', score, `${correct}/${QUIZ_LENGTH} correct · best streak ${best}`)
+    record('quiz', score, `${correct}/${QUIZ_LENGTH} correct · best streak ${best}`, { correct, lifelines: Object.values(used).filter(Boolean).length })
     router.push('/season')
   }
 

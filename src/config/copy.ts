@@ -72,6 +72,9 @@ export const copy = {
     options: { auto: 'Auto', high: 'High', low: 'Low' },
     motionNote: 'Your device asks for reduced motion, so we show still scenes instead of live 3D.',
     done: 'Done',
+    toggles: { sound: 'Sound effects', music: 'Music', haptics: 'Vibration' },
+    on: 'On',
+    off: 'Off',
   },
   rounds: {
     football: { n: 1, title: 'The Match', blurb: 'Five penalties. One keeper with a grudge.', href: '/play/football' },

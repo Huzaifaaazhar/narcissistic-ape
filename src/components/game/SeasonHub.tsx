@@ -11,7 +11,12 @@ import { TornCard } from '@/components/ui/TornCard'
 import { Patch, Badge } from '@/components/ui/Patch'
 import { Portrait } from '@/components/characters/Portrait'
 import { Button } from '@/components/ui/Button'
-import { CheckIcon, FootballIcon, MusicIcon, PinIcon, PlayIcon, ScrollIcon, TrophyIcon } from '@/components/icons'
+import { CheckIcon, DuelIcon, FlameIcon, FootballIcon, LockerIcon, MusicIcon, PinIcon, PlayIcon, ScrollIcon, StarIcon, TrophyIcon } from '@/components/icons'
+import { useProgress } from '@/state/progress'
+import { gradeFor } from '@/game/progress'
+import { dailySeed } from '@/game/duel'
+import { SettingsButton } from '@/components/layout/SettingsButton'
+import { PENDING_DUEL } from './DuelInvite'
 
 /** Rounds that are playable right now (others show "Opening soon"). */
 export const PLAYABLE: Round[] = ['football', 'quiz', 'hunt', 'dance']
@@ -25,6 +30,24 @@ export function SeasonHub() {
   const enrolment = usePlayer((s) => s.enrolment)
   const results = useSeason((s) => s.results)
   const history = useSeason((s) => s.history)
+  const mode = useSeason((s) => s.mode)
+  const seed = useSeason((s) => s.seed)
+  const duel = useSeason((s) => s.duel)
+  const startRun = useSeason((s) => s.startRun)
+  const xp = useProgress((s) => s.xp)
+  const streak = useProgress((s) => s.streak)
+
+  // a duel accepted before enrolling resumes here
+  useEffect(() => {
+    if (!ready || !enrolment) return
+    const raw = sessionStorage.getItem(PENDING_DUEL)
+    if (!raw) return
+    sessionStorage.removeItem(PENDING_DUEL)
+    try {
+      const d = JSON.parse(raw) as { seed: string; name: string; house: 'red' | 'blue'; total: number }
+      startRun({ seed: d.seed, mode: 'duel', duel: { name: d.name, house: d.house, total: d.total } })
+    } catch { /* ignore a malformed pending duel */ }
+  }, [ready, enrolment, startRun])
 
   if (!ready) return <div className="min-h-dvh" />
 
@@ -55,7 +78,32 @@ export function SeasonHub() {
             <p className="font-[family-name:var(--font-slab)] text-[24px] leading-none text-maroon">{best}</p>
           </div>
         )}
+        <SettingsButton />
       </header>
+
+      <div className="mt-5 grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-[2px] bg-cream-hi/70 px-4 py-3 shadow-paper">
+        <span className="flex items-center gap-1 font-[family-name:var(--font-slab)] text-[20px] text-maroon" aria-label={`${streak.current}-day streak`}>
+          <FlameIcon size={22} />{streak.current}
+        </span>
+        <div>
+          <p className="label text-[10px] font-bold text-navy">{gradeFor(xp).name}{gradeFor(xp).next ? ` → ${gradeFor(xp).next}` : ''}</p>
+          <div className="mt-1 h-1.5 overflow-hidden rounded-pill bg-paper-shade" role="progressbar" aria-label="Grade progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(gradeFor(xp).progress * 100)}>
+            <div className="h-full bg-navy" style={{ width: `${gradeFor(xp).progress * 100}%` }} />
+          </div>
+        </div>
+        <Link href="/locker" className="label flex min-h-11 items-center gap-1.5 rounded-pill border-2 border-navy px-3 text-[11px] font-bold text-navy hover:bg-navy hover:text-cream-hi">
+          <LockerIcon size={16} />Locker
+        </Link>
+      </div>
+
+      {mode !== 'season' && (
+        <div className={`mt-4 flex items-center gap-3 rounded-[2px] px-4 py-3 text-cream-hi ${mode === 'duel' ? 'bg-red' : 'bg-navy'}`}>
+          {mode === 'duel' ? <DuelIcon size={22} className="[--icon-accent:var(--color-gold)]" /> : <StarIcon size={22} className="[--icon-accent:var(--color-gold)]" />}
+          <p className="text-[14px] font-semibold">
+            {mode === 'duel' && duel ? `Duel vs ${duel.name}: beat ${duel.total}. Same questions, same beats.` : 'Daily challenge: the same game for everyone today.'}
+          </p>
+        </div>
+      )}
 
       <h1 className="mt-8 font-[family-name:var(--font-condensed)] text-[48px] leading-none text-navy uppercase">{copy.hub.title}</h1>
       <p className="mt-2 text-[16px] text-ink-soft">{copy.hub.any}</p>
@@ -96,6 +144,24 @@ export function SeasonHub() {
           )
         })}
       </ol>
+
+      {done.length === 0 && !(mode === 'daily' && seed === dailySeed()) && (
+        <TornCard seed="daily" className="mt-6" paperClassName="flex items-center gap-4 px-5 py-4">
+          <Patch tone="gold" size={50}><StarIcon size={24} className="text-[#5a3f0c] [--icon-accent:#fff1c9]" /></Patch>
+          <div className="min-w-0 flex-1">
+            <p className="label text-[11px] font-bold text-ink">Daily challenge</p>
+            <p className="text-[14px] text-ink-soft">
+              Same game for everyone today.{(() => {
+                const today = history.filter((h) => h.mode === 'daily' && h.seed === dailySeed())
+                return today.length ? ` Your best today: ${Math.max(...today.map((h) => h.total))}.` : ''
+              })()}
+            </p>
+          </div>
+          <button type="button" onClick={() => startRun({ seed: dailySeed(), mode: 'daily' })} className="label flex min-h-11 items-center gap-1.5 rounded-pill bg-navy px-4 text-[12px] font-bold text-cream-hi shadow-paper hover:bg-navy-hi">
+            <PlayIcon size={14} className="[--icon-accent:currentColor]" />Start
+          </button>
+        </TornCard>
+      )}
 
       <div className="fixed inset-x-0 bottom-0 bg-gradient-to-t from-paper via-paper/95 to-transparent px-4 pt-6 pb-[max(18px,env(safe-area-inset-bottom))]">
         <div className="mx-auto max-w-[620px]">

@@ -73,3 +73,15 @@ No High or Medium findings open. Two Low items accepted with rationale. Phase 2 
 | 5 Attacker | Tried `<script>`/bidi/zero-width nicknames in the enrol UI → rejected client-side (server re-validation lands with Phase 2) | `src/lib/sanitise.ts` | Info | Open → Phase 2 |
 
 No High or Medium findings open.
+
+## Core game + retention delta — 2026-10-30
+
+| Check | Finding | File | Severity | Status |
+|---|---|---|---|---|
+| 4 Logic | Scores are client-side and stored in localStorage; trivially editable by the player. No public leaderboard exists, so nothing is affected yet. | `src/state/season.ts` | Info | Accepted until the server-authoritative leaderboard |
+| 4 Logic | Duel links are client-encoded and editable; decoded with a strict Zod schema, nickname re-sanitised, total clamped, seed pattern-checked; rendered as text only | `src/game/duel.ts` | Low | Accepted (friendly duels only; documented on the invite page) |
+| 2 Data | Share card draws the nickname into a canvas as pixels; no HTML injection path | `src/lib/shareCard.ts` | — | Pass |
+| 3 Hardening | Service worker never caches `/api/*`; `sw.js` is `no-store`; offline page is static with no scripts | `public/sw.js`, `next.config.ts` | — | Pass |
+| 3 Hardening | Static PWA files are excluded from the CSP proxy (no scripts in them); all routes still carry the static security headers | `src/proxy.ts` | — | Pass |
+
+No High or Medium findings open.

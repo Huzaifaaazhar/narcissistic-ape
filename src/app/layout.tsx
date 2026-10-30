@@ -7,10 +7,13 @@ import './fonts.css'
 import './globals.css'
 import { preload } from 'react-dom'
 import { brand } from '@/config/brand'
+import { PwaRegister } from '@/components/layout/PwaRegister'
 
 export const metadata: Metadata = {
   title: { default: `${brand.gameTitle} · ${brand.school}`, template: `%s · ${brand.gameTitle}` },
   description: `Enrol at ${brand.schoolLong}, pick Red or Blue, and compete for the trophy.`,
+  appleWebApp: { capable: true, title: brand.gameTitle, statusBarStyle: 'default' },
+  icons: { apple: '/icons/apple-touch-icon.png' },
 }
 
 export const viewport: Viewport = {
@@ -29,7 +32,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   preload('/textures/paper-grain.png', { as: 'image', fetchPriority: 'high' })
   return (
     <html lang="en-GB">
-      <body>{children}</body>
+      <body>
+        {children}
+        <PwaRegister />
+      </body>
     </html>
   )
 }

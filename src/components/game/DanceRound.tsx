@@ -39,7 +39,7 @@ export function DanceRound() {
 
   const [phase, setPhase] = useState<Phase>('intro')
   const [hud, setHud] = useState({ score: 0, combo: 0 })
-  const [final, setFinal] = useState<{ score: number; lines: [string, string][] } | null>(null)
+  const [final, setFinal] = useState<{ score: number; lines: [string, string][]; maxCombo: number; perfect: number } | null>(null)
 
   const canvas = useRef<HTMLCanvasElement>(null)
   const live = useRef<Live | null>(null)
@@ -149,6 +149,8 @@ export function DanceRound() {
         const comeback = Math.round((acc(2) - acc(0)) * 100)
         setFinal({
           score: danceScore(L.raw, chart),
+          maxCombo: L.maxCombo,
+          perfect: L.counts.perfect,
           lines: [
             ['Perfect / great / ok', `${L.counts.perfect} / ${L.counts.great} / ${L.counts.ok}`],
             ['Missed', `${L.counts.miss} of ${total}`],
@@ -190,7 +192,7 @@ export function DanceRound() {
         max={DANCE_MAX}
         lines={final.lines}
         onNext={() => {
-          record('dance', final.score, `${final.lines[0]![1]} · ${final.lines[3]![1]}`)
+          record('dance', final.score, `${final.lines[0]![1]} · ${final.lines[3]![1]}`, { maxCombo: final.maxCombo, perfect: final.perfect })
           router.push('/season')
         }}
         nextLabel="Save and back to the hub"

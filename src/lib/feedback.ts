@@ -56,5 +56,7 @@ export function feedback(kind: keyof typeof SOUNDS) {
     try { SOUNDS[kind]() } catch { /* audio is a nicety */ }
   }
   const h = HAPTICS[kind]
-  if (s.haptics && h && typeof navigator !== 'undefined' && 'vibrate' in navigator) navigator.vibrate(h)
+  // browsers block vibration until the user has interacted with the page
+  const active = typeof navigator !== 'undefined' && (navigator as Navigator & { userActivation?: { hasBeenActive: boolean } }).userActivation?.hasBeenActive !== false
+  if (s.haptics && h && active && 'vibrate' in navigator) navigator.vibrate(h)
 }

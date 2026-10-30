@@ -60,6 +60,31 @@ export const BANK: QuizQuestion[] = [
   { id: 'u2', cat: 'campus', kind: 'mc', q: '"Cramming" for an exam means…', options: ['Studying hard at the last minute', 'Skipping the exam', 'Copying notes from a topper', 'Sleeping in the library'], why: 'Last-minute studying. Results may vary; chai consumption will not.' },
   { id: 'u3', cat: 'campus', kind: 'mc', q: 'In campus slang, a "proxy" is when…', options: ['A friend marks you present', 'You submit work early', 'You swap seats', 'The teacher is absent'], why: 'A friend answers your roll call. Not recommended. Very common.' },
   { id: 'u4', cat: 'campus', kind: 'mc', q: 'A semester is usually…', options: ['Half an academic year', 'One month of classes', 'A summer break', 'Exam week'], why: 'Half a year. Feels shorter until finals.' },
+  // more pop & tech
+  { id: 'p10', cat: 'pop', kind: 'tf', q: 'The first iPhone went on sale in 2007.', options: ['True', 'False'], why: 'True. June 2007, and pockets have never been the same.' },
+  { id: 'p11', cat: 'pop', kind: 'mc', q: 'Which game is home to Steve, Creepers and a lot of blocks?', options: ['Minecraft', 'Roblox', 'Terraria', 'Fortnite'], why: 'Minecraft. Somebody in your class built the whole campus in it.' },
+  { id: 'p12', cat: 'pop', kind: 'tf', q: 'Flappy Bird was pulled from the app stores by its own creator in 2014.', options: ['True', 'False'], why: 'True. February 2014. Phones everywhere breathed a sigh of relief.' },
+  { id: 'p13', cat: 'pop', kind: 'year', q: 'Netflix launched in India in which year?', options: ['2016', '2012', '2018', '2014'], why: 'January 2016, during its big global expansion.' },
+  // more cinema
+  { id: 'c10', cat: 'cinema', kind: 'mc', q: '"Zindagi Na Milegi Dobara" follows three friends on a road trip through which country?', options: ['Spain', 'Italy', 'Greece', 'Portugal'], why: 'Spain. Every friend group has since planned that trip and not taken it.' },
+  { id: 'c11', cat: 'cinema', kind: 'year', q: '"Kuch Kuch Hota Hai" released in which year?', options: ['1998', '1995', '2001', '2003'], why: '1998. It made college romances look much better dressed than real ones.' },
+  { id: 'c12', cat: 'cinema', kind: 'mc', q: 'The 2011 TV drama "Humsafar" is from which country?', options: ['Pakistan', 'India', 'Bangladesh', 'Turkey'], why: 'Pakistan. Families across the border watched it together.' },
+  { id: 'c13', cat: 'cinema', kind: 'tf', q: '"Dilwale Dulhania Le Jayenge" played at one Mumbai cinema for more than 20 years.', options: ['True', 'False'], why: 'True. Maratha Mandir ran it for over a thousand weeks.' },
+  { id: 'c14', cat: 'cinema', kind: 'mc', q: 'Rancho is a character in which film?', options: ['3 Idiots', 'Taare Zameen Par', 'Rang De Basanti', 'Chak De! India'], why: '3 Idiots. The engineering student everyone wanted to be.' },
+  // more sport
+  { id: 's7', cat: 'sport', kind: 'mc', q: 'Who captained India to the 2011 Cricket World Cup title?', options: ['MS Dhoni', 'Sachin Tendulkar', 'Virat Kohli', 'Sourav Ganguly'], why: 'MS Dhoni, who also hit the winning six.' },
+  { id: 's8', cat: 'sport', kind: 'mc', q: 'Which country has won the most FIFA World Cups?', options: ['Brazil', 'Germany', 'Italy', 'Argentina'], why: 'Brazil, with five titles.' },
+  { id: 's9', cat: 'sport', kind: 'tf', q: 'In T20 cricket, each side bats for a maximum of 20 overs.', options: ['True', 'False'], why: 'True. That’s the twenty in T20.' },
+  { id: 's10', cat: 'sport', kind: 'year', q: 'The Pakistan Super League played its first season in which year?', options: ['2016', '2013', '2018', '2010'], why: '2016, in the UAE.' },
+  // more general knowledge
+  { id: 'g9', cat: 'gk', kind: 'mc', q: 'What is the longest river in Pakistan?', options: ['Indus', 'Jhelum', 'Chenab', 'Ravi'], why: 'The Indus. It runs the length of the country.' },
+  { id: 'g10', cat: 'gk', kind: 'mc', q: 'How many continents are there?', options: ['7', '5', '6', '8'], why: 'Seven, by the usual count.' },
+  { id: 'g11', cat: 'gk', kind: 'tf', q: 'At sea level, water boils at 100 °C.', options: ['True', 'False'], why: 'True. Higher up, it boils cooler, which is why mountain chai is a struggle.' },
+  { id: 'g12', cat: 'gk', kind: 'mc', q: 'Which planet is known as the Red Planet?', options: ['Mars', 'Venus', 'Jupiter', 'Mercury'], why: 'Mars. Iron oxide dust; basically a rusty planet.' },
+  // more campus life
+  { id: 'u5', cat: 'campus', kind: 'mc', q: 'A "viva" is…', options: ['An oral exam', 'A group project', 'A sports trial', 'A late fee'], why: 'An oral exam. The examiner smiles; nobody trusts it.' },
+  { id: 'u6', cat: 'campus', kind: 'mc', q: 'A freshers’ party welcomes…', options: ['First-year students', 'Final-year students', 'New teachers', 'Alumni'], why: 'First-years. Seniors claim they organised it for them, not for the free food.' },
+  { id: 'u7', cat: 'campus', kind: 'mc', q: 'Your "elective" is…', options: ['A course you choose', 'A compulsory exam', 'The class monitor', 'A library fine'], why: 'A course you pick. Choose wisely; it’s 8 a.m. on Mondays.' },
 ]
 
 export type PreparedQuestion = QuizQuestion & { answer: number }

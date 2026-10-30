@@ -164,7 +164,7 @@ export function FootballRound() {
   const finish = () => {
     const goals = results.filter((r) => r.outcome === 'goal').length
     const corners = results.filter((r) => r.corner).length
-    record('football', score, `${goals}/${SHOTS} scored · ${corners} top bins`)
+    record('football', score, `${goals}/${SHOTS} scored · ${corners} top bins`, { goals, corners })
     router.push('/season')
   }
 

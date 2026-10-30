@@ -11,7 +11,11 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: false,
   async headers() {
-    return [{ source: '/:path*', headers: [...securityHeaders] }]
+    return [
+      { source: '/:path*', headers: [...securityHeaders] },
+      // the service worker must update promptly
+      { source: '/sw.js', headers: [{ key: 'Cache-Control', value: 'no-cache, no-store, must-revalidate' }] },
+    ]
   },
 }
 

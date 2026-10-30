@@ -349,3 +349,8 @@
   @keyframes hint-pulse { 50% { box-shadow: 0 0 0 3px var(--color-gold), 0 0 0 11px rgb(201 162 75 / 0.1); } }
   .flip { transform-style: preserve-3d; }
 }
+
+@layer components {
+  .locker-drop { animation: drop-in 700ms var(--ease-spring) both; }
+  @keyframes drop-in { from { transform: translateY(-14px) rotate(-3deg) scale(0.92); opacity: 0; } }
+}
