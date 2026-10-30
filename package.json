@@ -1,0 +1,54 @@
+{
+  "name": "student-of-the-year",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "shots": "node scripts/shots.mjs",
+    "audit": "npm audit --audit-level=high && node scripts/scan-build.mjs",
+    "prepare": "git config core.hooksPath .githooks || true",
+    "a11y": "playwright test"
+  },
+  "dependencies": {
+    "@fontsource-variable/montserrat": "5.3.0",
+    "@fontsource/alfa-slab-one": "5.3.0",
+    "@fontsource/anton": "5.3.0",
+    "@fontsource/archivo-black": "5.3.0",
+    "@fontsource/graduate": "5.3.0",
+    "@fontsource/montserrat": "5.3.0",
+    "@fontsource/ultra": "5.3.0",
+    "@fontsource/zilla-slab": "5.3.0",
+    "@supabase/ssr": "0.12.7",
+    "@supabase/supabase-js": "2.118.0",
+    "next": "16.4.3",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "server-only": "0.0.1",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.63.0",
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/node": "22.20.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "eslint": "10.13.0",
+    "eslint-config-next": "16.4.3",
+    "tailwindcss": "4.3.3",
+    "typescript": "6.0.3",
+    "vitest": "5.0.5"
+  },
+  "overrides": {
+    "playwright-core": "1.63.0"
+  }
+}

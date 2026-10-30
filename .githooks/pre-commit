@@ -1,0 +1,7 @@
+#!/bin/sh
+# Secret scan on staged changes. Install gitleaks locally to enable: https://github.com/gitleaks/gitleaks
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks git --staged --redact --no-banner || { echo "gitleaks found a possible secret; commit blocked."; exit 1; }
+else
+  echo "pre-commit: gitleaks not installed, skipping local secret scan (CI still runs it)."
+fi

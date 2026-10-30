@@ -1,0 +1,149 @@
+@import 'tailwindcss';
+@import './components.css';
+
+/* Tokens: source of truth is /design-refs; mirrored in src/config/tokens.ts. Default palette removed. */
+@theme {
+  --color-*: initial;
+  --color-paper: #efe3cf;
+  --color-paper-warm: #ecdcc4;
+  --color-paper-deep: #e4d3b9;
+  --color-paper-shade: #d6c3a5;
+  --color-navy: #101d3a;
+  --color-navy-hi: #24396b;
+  --color-maroon: #6e0c16;
+  --color-red: #a8202b;
+  --color-red-hi: #c22f3a;
+  --color-ink: #1b1b26;
+  --color-ink-soft: #4a4552;
+  --color-gold: #c9a24b;
+  --color-cream-hi: #fbf4e6;
+  --color-night: #0b1020;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --font-*: initial;
+  --font-sans: 'Montserrat Variable', 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+  --font-condensed: 'Anton', 'Impact', 'Arial Narrow', sans-serif;
+  --font-slab: 'Alfa Slab One', 'Rockwell', serif;
+  --font-varsity: 'Graduate', 'Rockwell', serif;
+  --font-slab-italic: 'Zilla Slab', 'Rockwell', serif;
+
+  --radius-*: initial;
+  --radius-paper: 2px;
+  --radius-pill: 999px;
+
+  --shadow-*: initial;
+  --shadow-paper: 0 1px 1px rgb(60 30 10 / 0.1), 0 4px 10px -2px rgb(60 30 10 / 0.18), 0 14px 28px -12px rgb(60 30 10 / 0.22);
+  --shadow-lift: 0 2px 2px rgb(60 30 10 / 0.12), 0 10px 22px -6px rgb(60 30 10 / 0.26);
+  --shadow-press: inset 0 2px 3px rgb(30 10 0 / 0.3);
+
+  --tracking-label: 0.14em;
+  --tracking-wide: 0.22em;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 20px;
+  --text-xl: 28px;
+  --text-2xl: 40px;
+  --text-3xl: 56px;
+  --text-4xl: 72px;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --divider: linear-gradient(90deg, var(--color-maroon) 0 50%, var(--color-navy) 50% 100%);
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+    background: var(--color-paper);
+  }
+  body {
+    min-height: 100dvh;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+  /* Paper: grain tile + warm vignette on the body itself (scrolls with content; no fixed layers). */
+  body {
+    background:
+      url('/textures/paper-grain.png') 0 0 / 192px 192px,
+      radial-gradient(130% 80% at 50% 30%, transparent 50%, rgb(120 80 40 / 0.14) 100%),
+      var(--color-paper);
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-navy);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  ::selection {
+    background: var(--color-maroon);
+    color: var(--color-cream-hi);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 1ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Varsity lettering (ref-2): ink keyline outermost, cream band, maroon fill, warm drop.
+     Two stacked copies because a single text-stroke can't draw two concentric outlines. */
+  .varsity {
+    display: inline-grid;
+    font-family: var(--font-varsity);
+    line-height: 0.98;
+    letter-spacing: 0.02em;
+    --v-fill: var(--color-maroon);
+  }
+  .varsity > * {
+    grid-area: 1 / 1;
+    paint-order: stroke fill;
+  }
+  /* Rings of offset shadows approximate a dilation with round joins (text-stroke miters spike). */
+  .varsity > .varsity-back {
+    color: var(--color-cream-hi);
+    text-shadow:
+      0.050em 0.000em 0 var(--color-cream-hi), 0.046em 0.019em 0 var(--color-cream-hi), 0.035em 0.035em 0 var(--color-cream-hi), 0.019em 0.046em 0 var(--color-cream-hi), 0.000em 0.050em 0 var(--color-cream-hi), -0.019em 0.046em 0 var(--color-cream-hi), -0.035em 0.035em 0 var(--color-cream-hi), -0.046em 0.019em 0 var(--color-cream-hi), -0.050em 0.000em 0 var(--color-cream-hi), -0.046em -0.019em 0 var(--color-cream-hi), -0.035em -0.035em 0 var(--color-cream-hi), -0.019em -0.046em 0 var(--color-cream-hi), -0.000em -0.050em 0 var(--color-cream-hi), 0.019em -0.046em 0 var(--color-cream-hi), 0.035em -0.035em 0 var(--color-cream-hi), 0.046em -0.019em 0 var(--color-cream-hi),
+      0.075em 0.000em 0 var(--color-cream-hi), 0.072em 0.019em 0 var(--color-cream-hi), 0.065em 0.037em 0 var(--color-cream-hi), 0.053em 0.053em 0 var(--color-cream-hi), 0.038em 0.065em 0 var(--color-cream-hi), 0.019em 0.072em 0 var(--color-cream-hi), 0.000em 0.075em 0 var(--color-cream-hi), -0.019em 0.072em 0 var(--color-cream-hi), -0.037em 0.065em 0 var(--color-cream-hi), -0.053em 0.053em 0 var(--color-cream-hi), -0.065em 0.037em 0 var(--color-cream-hi), -0.072em 0.019em 0 var(--color-cream-hi), -0.075em 0.000em 0 var(--color-cream-hi), -0.072em -0.019em 0 var(--color-cream-hi), -0.065em -0.037em 0 var(--color-cream-hi), -0.053em -0.053em 0 var(--color-cream-hi), -0.038em -0.065em 0 var(--color-cream-hi), -0.019em -0.072em 0 var(--color-cream-hi), -0.000em -0.075em 0 var(--color-cream-hi), 0.019em -0.072em 0 var(--color-cream-hi), 0.038em -0.065em 0 var(--color-cream-hi), 0.053em -0.053em 0 var(--color-cream-hi), 0.065em -0.038em 0 var(--color-cream-hi), 0.072em -0.019em 0 var(--color-cream-hi),
+      0.100em 0.000em 0 var(--color-ink), 0.097em 0.026em 0 var(--color-ink), 0.087em 0.050em 0 var(--color-ink), 0.071em 0.071em 0 var(--color-ink), 0.050em 0.087em 0 var(--color-ink), 0.026em 0.097em 0 var(--color-ink), 0.000em 0.100em 0 var(--color-ink), -0.026em 0.097em 0 var(--color-ink), -0.050em 0.087em 0 var(--color-ink), -0.071em 0.071em 0 var(--color-ink), -0.087em 0.050em 0 var(--color-ink), -0.097em 0.026em 0 var(--color-ink), -0.100em 0.000em 0 var(--color-ink), -0.097em -0.026em 0 var(--color-ink), -0.087em -0.050em 0 var(--color-ink), -0.071em -0.071em 0 var(--color-ink), -0.050em -0.087em 0 var(--color-ink), -0.026em -0.097em 0 var(--color-ink), -0.000em -0.100em 0 var(--color-ink), 0.026em -0.097em 0 var(--color-ink), 0.050em -0.087em 0 var(--color-ink), 0.071em -0.071em 0 var(--color-ink), 0.087em -0.050em 0 var(--color-ink), 0.097em -0.026em 0 var(--color-ink),
+      0.125em 0.000em 0 var(--color-ink), 0.123em 0.024em 0 var(--color-ink), 0.115em 0.048em 0 var(--color-ink), 0.104em 0.069em 0 var(--color-ink), 0.088em 0.088em 0 var(--color-ink), 0.069em 0.104em 0 var(--color-ink), 0.048em 0.115em 0 var(--color-ink), 0.024em 0.123em 0 var(--color-ink), 0.000em 0.125em 0 var(--color-ink), -0.024em 0.123em 0 var(--color-ink), -0.048em 0.115em 0 var(--color-ink), -0.069em 0.104em 0 var(--color-ink), -0.088em 0.088em 0 var(--color-ink), -0.104em 0.069em 0 var(--color-ink), -0.115em 0.048em 0 var(--color-ink), -0.123em 0.024em 0 var(--color-ink), -0.125em 0.000em 0 var(--color-ink), -0.123em -0.024em 0 var(--color-ink), -0.115em -0.048em 0 var(--color-ink), -0.104em -0.069em 0 var(--color-ink), -0.088em -0.088em 0 var(--color-ink), -0.069em -0.104em 0 var(--color-ink), -0.048em -0.115em 0 var(--color-ink), -0.024em -0.123em 0 var(--color-ink), -0.000em -0.125em 0 var(--color-ink), 0.024em -0.123em 0 var(--color-ink), 0.048em -0.115em 0 var(--color-ink), 0.069em -0.104em 0 var(--color-ink), 0.088em -0.088em 0 var(--color-ink), 0.104em -0.069em 0 var(--color-ink), 0.115em -0.048em 0 var(--color-ink), 0.123em -0.024em 0 var(--color-ink),
+      0.03em 0.17em 0.1em rgb(40 15 5 / 0.32);
+  }
+  .varsity > .varsity-front {
+    color: var(--v-fill);
+    -webkit-text-stroke: 0.03em var(--v-fill);
+  }
+  .varsity-navy { --v-fill: var(--color-navy); }
+  /* Plain collegiate (ref-1 "CAMPUS COOL"): Graduate thickened with a same-colour stroke. */
+  .collegiate {
+    font-family: var(--font-varsity);
+    line-height: 0.95;
+    -webkit-text-stroke: 0.035em currentColor;
+    letter-spacing: 0.02em;
+  }
+  .label {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+  }
+  .divider-split {
+    height: 3px;
+    background: var(--divider);
+    border: 0;
+  }
+}
