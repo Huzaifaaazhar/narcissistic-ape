@@ -59,7 +59,8 @@ try {
       page.on('pageerror', (e) => errors.push(e.message))
       page.on('console', (m) => m.type() === 'error' && errors.push(m.text()))
       const sep = path.includes('?') ? '&' : '?'
-      await page.goto(`${base}${path}${sep}debug=1&freeze=1`, { waitUntil: 'networkidle' })
+      // Debug counters only on request (DEBUG=1): they read as "1 fps" under software GL and mislead.
+      await page.goto(`${base}${path}${sep}${process.env.DEBUG === '1' ? 'debug=1&' : ''}freeze=1`, { waitUntil: 'networkidle' })
       await page.evaluate(() => document.fonts.ready)
       await page.waitForTimeout(Number(process.env.SETTLE_MS ?? 700))
       const file = `shots/${name.replace(/[^a-z0-9-]/gi, '_')}-${vp}.png`
