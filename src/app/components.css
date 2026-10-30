@@ -324,3 +324,15 @@
   .roll-col { display: flex; flex-direction: column; transition: transform 900ms var(--ease-out-expo); }
   .roll-col > span { height: 1em; }
 }
+
+@layer components {
+  /* ---------- Landing hero (driven by --p, 0..1 scroll progress) ---------- */
+  .hero-poster { transform: scale(calc(1 + var(--p) * 0.18)); transform-origin: 50% 46%; will-change: transform; }
+  .hero-title { opacity: calc(1 - var(--p) * 3.2); transform: translateY(calc(var(--p) * -60px)); }
+  .hero-hint { opacity: calc(1 - var(--p) * 5); }
+  .hero-end { opacity: clamp(0, calc((var(--p) - 0.78) * 6), 1); transform: translateY(calc((1 - var(--p)) * 30px)); }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-poster { transform: none; }
+    .hero-title, .hero-end { transform: none; }
+  }
+}

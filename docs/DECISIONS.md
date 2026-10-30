@@ -22,3 +22,19 @@ One line per non-obvious choice. Newest at the bottom.
 - **TypeScript 6.0** rather than 7.x (native port): Next's type plugin relies on the JS compiler API.
 - **Archetype picker uses emblem patches in Phase 0**; original illustrated characters replace them in Phase 1 enrolment.
 - **Lighthouse CI deferred to Phase 1**: Phase 0 has no real landing to measure.
+
+## Phase 1
+- **three pinned to 0.186.1** (not 0.187): `postprocessing@6.39.5` peers `three < 0.187`. npm `overrides` dedupes the copy drei's `stats-gl` pulls in.
+- **IBL from drei `Lightformer` softboxes, no HDRI download** (a 1k Poly Haven HDR is 1.6 MB). Studio env for the trophy, golden-hour env for the corridor. Revisit only if reflections read fake on real devices.
+- **ACES filmic, not AgX**: AgX turned the gold muddy brown in side-by-side shots. The composer disables renderer tone mapping, so `<ToneMapping>` runs in the post chain; without post (low tier) the renderer applies ACES.
+- **All textures procedural** (noise roughness + scratches, locker normal map from a drawn height map, red-oxide floor, walnut, felt banners, engraved plate). Zero image requests for 3D; text textures wait on `document.fonts.load`.
+- **Red-oxide polished floor** as a deliberate South Asian school detail; **Roll of Honour** names are fictional initials + common surnames, ending "2026 · ?".
+- **Corridor FOV is computed from aspect**: ~58° horizontal on wide screens, 44° portrait, vertical clamped 34–66°. Portrait needs more vertical FOV than the spec's 30–40° hero guidance to keep the lockers in frame; the trophy viewer stays at 32°.
+- **`react-hooks/immutability` off for `src/three/**`**: R3F mutates three objects in `useFrame` by design.
+- **Poster first, 3D second**: posters are pre-rendered by `npm run posters` (software GL, frozen camera) as 29–41 KB WebP. Desktop boots 3D on `load` + idle; phones boot it on first scroll/touch only (no timer: an idle reader shouldn't pay for it). The scroll-input object lives in `src/three/input.ts` so the page never imports three.js eagerly.
+- **Tier logic** (`decideTier`): no WebGL2 / reduced motion / Save-Data → poster; phone with ≤4 cores → poster; other phones → low; desktop → high. `PerformanceMonitor` drops post, then DPR, then falls back to the poster. Graphics Auto/High/Low in Settings.
+- **Low tier keeps the sun shadow** (1024 map): the pillar stripes are the scene's signature and the live scene must not look worse than the poster it replaces.
+- **Above-the-fold fonts self-hosted in `public/fonts`** (Montserrat latin/latin-ext, Graduate latin) and preloaded; paper grain preloaded because the CTA's background makes it the LCP candidate (Chrome ignores the full-bleed poster as a background-like image).
+- **Enrolment is local (zustand persist) until Phase 2** mirrors it server-side. Stores only the chosen handle, house and archetype.
+- **House flood uses the Web Animations API**, not Framer Motion: one effect didn't justify the dependency yet.
+- **Prettier config** (`semi: false, singleQuote, printWidth 140`) added to match the hand-written style.

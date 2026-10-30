@@ -9,6 +9,16 @@ const ROUTES = {
   type: '/dev/type',
   icons: '/dev/gallery?section=icons',
   home: '/',
+  'home-3d': '/?tier=high',
+  'home-end': '/?tier=high&p=1',
+  'home-poster': '/?tier=poster',
+  trophy: '/dev/scenes/trophy',
+  corridor: '/dev/scenes/corridor?tier=high',
+  'corridor-mid': '/dev/scenes/corridor?tier=high&p=0.55',
+  'corridor-end': '/dev/scenes/corridor?tier=high&p=1',
+  'corridor-low': '/dev/scenes/corridor?tier=low',
+  enrol: '/enrol',
+  characters: '/dev/characters',
 }
 const VIEWPORTS = {
   phone: { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true },
@@ -53,7 +63,7 @@ try {
       await page.evaluate(() => document.fonts.ready)
       await page.waitForTimeout(Number(process.env.SETTLE_MS ?? 700))
       const file = `shots/${name.replace(/[^a-z0-9-]/gi, '_')}-${vp}.png`
-      await page.screenshot({ path: file, fullPage: full })
+      await page.screenshot({ path: file, fullPage: full, timeout: 180_000 })
       console.log(file, errors.length ? `ERRORS (${errors.length}): ${[...new Set(errors.map((e) => e.slice(0, 160)))].join(' | ')}` : 'ok')
       await ctx.close()
     }

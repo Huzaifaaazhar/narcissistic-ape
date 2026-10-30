@@ -9,6 +9,8 @@ Full spec lives in the original build prompt; this file holds what you need ever
 - `npm test`: Vitest (pure logic: scoring, rng, sanitiser, env)
 - `npm run lint` / `npm run typecheck`
 - `npm run shots [-- gallery type home /any/path]`: Playwright screenshots → `shots/<name>-{phone,desktop}.png` (390×844, 1440×900). **Open them and critique after every visual change.**
+- `npm run posters`: re-render LCP/fallback posters from the 3D scenes into `public/posters/` (run after any scene change)
+- `node scripts/flow-enrol.mjs`: walk the enrol flow and screenshot each step (needs a dev server, `BASE_URL`)
 - `npm run a11y`: axe + security-header checks (Playwright)
 - `npm run audit`: `npm audit` + client-bundle secret scan (needs a build)
 
@@ -16,12 +18,14 @@ Full spec lives in the original build prompt; this file holds what you need ever
 Next 16.4 (App Router, `proxy.ts` not middleware, ESLint CLI flat config) · React 19.3 · TypeScript 6 strict ·
 Tailwind 4 (tokens via `@theme` in `src/app/globals.css`, default palette removed) · Zod 4 · Supabase (`@supabase/ssr`) ·
 Vitest 5 · Playwright 1.63 (matches preinstalled Chromium; don't reinstall). Next bundles its docs in `node_modules/next/dist/docs/`.
-Planned: three/R3F/drei/postprocessing/rapier (Phase 1), Framer Motion + GSAP, Howler, Upstash, Turnstile, Serwist.
+three 0.186.1 (pinned for postprocessing) · R3F 9.8 · drei 10.7 · postprocessing 6.39 · zustand 5.
+Planned: rapier (Phase 3), Framer Motion + GSAP, Howler, Upstash, Turnstile, Serwist.
 
 ## Layout
 `src/app` routes · `src/components/{ui,icons}` · `src/three` · `src/game` (pure TS) · `src/config` (brand, copy, tokens, motion, scoring) ·
 `src/lib` (env, sanitise, security-headers, supabase) · `supabase/migrations` · `docs/` · `design-refs/` (source of truth).
-Dev routes: `/dev/gallery` (all components, all states), `/dev/type` (font specimen).
+Dev routes: `/dev/gallery`, `/dev/type`, `/dev/scenes` (+ `?debug=1` fps/calls/tris, `&tier=low`, `&freeze=1&p=0..1`), `/dev/characters`.
+3D: `src/three/{scenes,objects,materials,postfx,hooks}`; never import three from page code (use `src/three/input.ts`, `quality.ts`, `next/dynamic`).
 
 ## Design tokens
 | token | hex | use |
@@ -63,7 +67,7 @@ No allocation in useFrame; dispose on unmount; instance repeats; one real-time s
 - Run the 5-check preflight before each public deploy; log in `docs/SECURITY.md`. Record non-obvious choices in `docs/DECISIONS.md`.
 
 ## Phases
-0 Foundations ✅ · 1 Hero corridor + TrophyViewer + enrol · 2 Quiz + Hunt + hub + finale + board + share (ship) ·
+0 Foundations ✅ · 1 Hero corridor + TrophyViewer + enrol ✅ · 2 Quiz + Hunt + hub + finale + board + share (ship) ·
 3 Football + Dance with input-log verification · 4 House War, duels, daily, streaks, locker, PWA · 5 Ceremony + AI Dean · 6 Polish & launch.
 Each phase ends deployable, with screenshots (≥3 critique rounds per hero scene/screen), acceptance checklist, security delta, perf numbers.
 

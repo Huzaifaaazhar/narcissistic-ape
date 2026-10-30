@@ -3,10 +3,10 @@ import { useState } from 'react'
 import { brand, type House } from '@/config/brand'
 import { PennantIcon } from '@/components/icons'
 
-type Props = { defaultValue?: House; onChange?: (h: House) => void; disabled?: boolean; name?: string }
+type Props = { defaultValue?: House; onChange?: (h: House) => void; disabled?: boolean; name?: string; size?: 'md' | 'lg'; hideLegend?: boolean }
 
 /** Red vs Blue picker as a radio group of two pennant panels. Pattern + label, not colour alone. */
-export function HouseToggle({ defaultValue, onChange, disabled, name = 'house' }: Props) {
+export function HouseToggle({ defaultValue, onChange, disabled, name = 'house', size = 'md', hideLegend }: Props) {
   const [value, setValue] = useState<House | undefined>(defaultValue)
   const pick = (h: House) => {
     setValue(h)
@@ -14,7 +14,7 @@ export function HouseToggle({ defaultValue, onChange, disabled, name = 'house' }
   }
   return (
     <fieldset className="w-full" disabled={disabled}>
-      <legend className="label mb-3 text-xs font-bold text-navy">Pick your side</legend>
+      <legend className={hideLegend ? 'sr-only' : 'label mb-3 text-xs font-bold text-navy'}>Pick your side</legend>
       <div className="grid grid-cols-2 gap-3">
         {(['red', 'blue'] as const).map((h) => {
           const on = value === h
@@ -23,7 +23,7 @@ export function HouseToggle({ defaultValue, onChange, disabled, name = 'house' }
           return (
             <label
               key={h}
-              className={`group relative flex min-h-36 cursor-pointer flex-col justify-between overflow-hidden rounded-[2px] p-4 text-cream-hi transition-[transform,filter,opacity] duration-300 ease-[var(--ease-out-expo)] has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-3 has-[:focus-visible]:outline-navy has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50 ${
+              className={`group relative flex ${size === 'lg' ? 'min-h-[min(52dvh,380px)] p-5' : 'min-h-36 p-4'} cursor-pointer flex-col justify-between overflow-hidden rounded-[2px] text-cream-hi transition-[transform,filter,opacity] duration-300 ease-[var(--ease-out-expo)] has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-3 has-[:focus-visible]:outline-navy has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50 ${
                 on ? 'scale-[1.02] shadow-lift' : off ? 'scale-[0.97] opacity-75 saturate-[0.65]' : 'shadow-paper'
               }`}
               style={{
@@ -43,8 +43,8 @@ export function HouseToggle({ defaultValue, onChange, disabled, name = 'house' }
                 </span>
               </span>
               <span>
-                <span className="collegiate block text-[30px] leading-none">{brand.houses[h].short.toUpperCase()}</span>
-                <span className="mt-1 block text-[12px] leading-snug text-cream-hi/85">{brand.houses[h].motto}</span>
+                <span className={`collegiate block leading-none ${size === 'lg' ? 'text-[44px]' : 'text-[30px]'}`}>{brand.houses[h].short.toUpperCase()}</span>
+                <span className={`mt-1 block leading-snug text-cream-hi/85 ${size === 'lg' ? 'text-[15px]' : 'text-[12px]'}`}>{brand.houses[h].motto}</span>
               </span>
             </label>
           )

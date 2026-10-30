@@ -58,3 +58,18 @@ Five-check preflight (spec §11), run before every public deploy. This does not 
 
 ### Summary
 No High or Medium findings open. Two Low items accepted with rationale. Phase 2 opens: rate limiting, IP hashing, delete-my-data, API CSP/CORS review.
+
+## Phase 1 delta — 2026-10-30
+
+| Check | Finding | File:line | Severity | Status |
+|---|---|---|---|---|
+| 1 Secrets | No new env vars; client bundle scan still clean | `scripts/scan-build.mjs` | — | Pass |
+| 2 Personal data | Enrolment (handle, house, archetype) and settings stored in localStorage; no email/phone/name; documented on `/privacy` | `src/state/player.ts`, `src/app/privacy/page.tsx` | Info | Accepted |
+| 2 Personal data | Nickname drawn into canvas textures as pixels only (trophy plate), after `sanitiseNickname` | `src/three/materials/textures.ts`, `EnrolFlow.tsx` | — | Pass |
+| 3 Hardening | 3D pages run under the strict nonce CSP with zero violations in production (WebGL shaders need no `unsafe-eval`; no workers/WASM used) | `src/lib/security-headers.ts` | — | Pass (Playwright on `next start`) |
+| 3 Hardening | Fonts/posters/textures served from `public/` with static security headers | `next.config.ts` | — | Pass |
+| 3 Hardening | New dev routes (`/dev/scenes/*`, `/dev/characters`) are `page.dev.tsx` → absent from prod build | `next.config.ts` | — | Pass |
+| 4 Logic | No score or server surface added this phase | — | — | n/a |
+| 5 Attacker | Tried `<script>`/bidi/zero-width nicknames in the enrol UI → rejected client-side (server re-validation lands with Phase 2) | `src/lib/sanitise.ts` | Info | Open → Phase 2 |
+
+No High or Medium findings open.

@@ -11,5 +11,10 @@ export default defineConfig([
       'react/no-danger': 'error',
     },
   },
+  {
+    // R3F mutates three.js objects (uniforms, gl.info, cameras) imperatively inside useFrame by design.
+    files: ['src/three/**'],
+    rules: { 'react-hooks/immutability': 'off' },
+  },
   globalIgnores(['.next/**', 'out/**', 'build/**', 'shots/**', 'next-env.d.ts']),
 ])

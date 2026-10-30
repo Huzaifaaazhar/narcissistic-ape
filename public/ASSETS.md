@@ -7,6 +7,10 @@
 | Graduate | Google Fonts via `@fontsource/graduate` | SIL OFL 1.1 |
 | Montserrat (variable) | Google Fonts via `@fontsource-variable/montserrat` | SIL OFL 1.1 |
 | Zilla Slab | Google Fonts via `@fontsource/zilla-slab` | SIL OFL 1.1 |
+| `fonts/*.woff2` (Montserrat, Graduate) | Copied from the @fontsource packages above for preloading | SIL OFL 1.1 |
+| `posters/*.webp` | Rendered from this project's own 3D scenes (`npm run posters`) | Original |
+| 3D textures (floor, lockers, wood, felt, plate) | Generated procedurally at runtime | Original |
+| Character portraits (`src/components/characters`) | Drawn for this project | Original |
 | `textures/paper-grain.png` | Generated procedurally for this project (numpy noise + fibres) | Original |
 | Icons (`src/components/icons`) | Drawn for this project | Original |
 
