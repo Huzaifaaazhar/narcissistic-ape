@@ -85,6 +85,8 @@
   .btn-sm { min-height: 40px; }
   .btn-sm .btn-face { font-size: 13px; padding: 0 1.1rem; }
   .btn-block { display: flex; width: 100%; }
+  /* full-width CTAs wrap on narrow phones (320px) instead of overflowing */
+  .btn-block .btn-face { white-space: normal; text-align: center; line-height: 1.25; padding-block: 10px; }
 
   @media (hover: hover) {
     .btn:hover:not(:disabled) { filter: drop-shadow(0 1px 0 rgb(60 30 10 / 0.25)) drop-shadow(0 10px 12px rgb(60 30 10 / 0.26)); transform: translateY(-1px); }

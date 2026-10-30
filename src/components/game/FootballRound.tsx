@@ -219,7 +219,7 @@ export function FootballRound() {
           </span>
         </RoundHud>
       </div>
-      <div className="relative flex-1">
+      <div className="relative min-h-0 flex-1">
         <canvas
           ref={canvas}
           className="absolute inset-0 h-full w-full touch-none select-none"

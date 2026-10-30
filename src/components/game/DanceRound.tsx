@@ -205,16 +205,21 @@ export function DanceRound() {
       <div className="bg-paper">
         <RoundHud label={hud.combo >= 5 ? `Combo ×${hud.combo}` : 'The Battle'} score={hud.score} />
       </div>
-      <canvas
-        ref={canvas}
-        className="w-full flex-1 touch-none select-none"
-        onPointerDown={(e) => {
-          const r = canvas.current!.getBoundingClientRect()
-          hitLane(Math.min(3, Math.max(0, Math.floor(((e.clientX - r.left) / r.width) * 4))))
-        }}
-        role="application"
-        aria-label="Rhythm game. Tap a lane, or press D, F, J or K, as each note crosses the line."
-      />
+      {/* The canvas is pinned inside a sized box: as a direct flex child, Safari sizes it from its
+          own width/height attributes, which we rewrite on resize, so it grew until the hit line
+          fell off-screen. */}
+      <div className="relative min-h-0 flex-1">
+        <canvas
+          ref={canvas}
+          className="absolute inset-0 h-full w-full touch-none select-none"
+          onPointerDown={(e) => {
+            const r = canvas.current!.getBoundingClientRect()
+            hitLane(Math.min(3, Math.max(0, Math.floor(((e.clientX - r.left) / r.width) * 4))))
+          }}
+          role="application"
+          aria-label="Rhythm game. Tap a lane, or press D, F, J or K, as each note crosses the line."
+        />
+      </div>
     </div>
   )
 }

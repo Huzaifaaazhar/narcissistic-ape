@@ -253,7 +253,7 @@ function Approved({ enrolment, onEdit }: { enrolment: Enrolment; onEdit: () => v
     return () => clearTimeout(t)
   }, [])
   return (
-    <main className="mx-auto grid min-h-dvh max-w-[560px] content-start gap-x-12 px-4 pt-[max(24px,env(safe-area-inset-top))] pb-10 lg:max-w-[1080px] lg:grid-cols-[1fr_1.1fr] lg:content-center lg:pt-12">
+    <main className="mx-auto grid min-h-dvh overflow-x-clip max-w-[560px] content-start gap-x-12 px-4 pt-[max(24px,env(safe-area-inset-top))] pb-10 lg:max-w-[1080px] lg:grid-cols-[1fr_1.1fr] lg:content-center lg:pt-12">
       <div className="lg:col-start-1 lg:row-start-1 lg:self-end">
         <div className="relative mt-2 text-center lg:text-left">
           <p className="label text-[11px] font-bold text-maroon">{brand.schoolLong}</p>
