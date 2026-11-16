@@ -148,7 +148,7 @@ const CLIPS = {
     const b64 = await p2.evaluate(() => window.__beatWav)
     writeFileSync(`${OUT}/_beat.wav`, Buffer.from(b64, 'base64'))
     await c2.close()
-    const delayMs = Math.round(((tapFrame + 1) / FPS) * 1000)
+    const delayMs = Math.round((tapFrame / FPS) * 1000) // the tap lands on the clock at tapFrame/FPS
     execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', `${OUT}/_06-dance-silent.mp4`, '-i', `${OUT}/_beat.wav`,
       '-filter_complex', `[1:a]adelay=${delayMs}|${delayMs},apad[a]`, '-map', '0:v', '-map', '[a]', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '256k', '-shortest', '-movflags', '+faststart', `${OUT}/06-dance.mp4`])
     console.log(`  ${OUT}/06-dance.mp4: audio muxed (offset ${delayMs} ms)`)
