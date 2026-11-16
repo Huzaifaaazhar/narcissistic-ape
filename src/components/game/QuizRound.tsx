@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { pickQuiz, quizPoints, QUIZ_LENGTH, QUIZ_MAX, QUIZ_SECONDS } from '@/game/quiz'
 import { useSeason } from '@/state/season'
 import { feedback } from '@/lib/feedback'
+import { isRec } from '@/lib/rec'
 import { RoundHud, RoundIntro, RoundResults } from './RoundShell'
 import { TornCard } from '@/components/ui/TornCard'
 import { TimerRing } from '@/components/ui/TimerRing'
@@ -203,6 +204,7 @@ export function QuizRound() {
                 key={opt}
                 type="button"
                 disabled={revealed || gone}
+                data-correct={isRec() && isRight ? '' : undefined}
                 onClick={() => answer(k)}
                 className={`answer group relative flex min-h-[60px] items-center gap-3 rounded-[2px] border-2 px-4 py-3 text-left text-[17px] font-semibold transition-all duration-200 ${
                   gone ? 'border-transparent bg-paper-deep/40 text-ink-soft/40 line-through' :

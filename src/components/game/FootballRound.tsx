@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { FOOTBALL_MAX, SHOTS, resolveShot, type Shot, type ShotResult } from '@/game/football'
 import { useSeason } from '@/state/season'
 import { feedback } from '@/lib/feedback'
+import { canvasDpr } from '@/lib/rec'
 import { RoundHud, RoundIntro, RoundResults } from './RoundShell'
 import { CheckIcon, CloseIcon, FootballIcon } from '@/components/icons'
 
@@ -80,7 +81,7 @@ export function FootballRound() {
     let raf = 0
     const resize = () => {
       const r = c.getBoundingClientRect()
-      const dpr = Math.min(2, devicePixelRatio || 1)
+      const dpr = canvasDpr()
       c.width = r.width * dpr
       c.height = r.height * dpr
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)

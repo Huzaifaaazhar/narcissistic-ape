@@ -9,6 +9,7 @@ import { CorridorEnvironment } from './Lighting'
 import { Post } from './postfx/Post'
 import { SceneStats } from './Stats'
 import { Kick } from './hooks/Kick'
+import { isRec } from '@/lib/rec'
 import { useSceneParams } from './hooks/useSceneParams'
 import { tierConfig, type Tier } from './quality'
 
@@ -21,7 +22,9 @@ type Props = { tier: Exclude<Tier, 'poster'>; className?: string; onReady?: () =
 export default function CorridorCanvas({ tier, className = '', onReady, onFallback }: Props) {
   const cfg = tierConfig[tier]
   const { freeze, debug, p } = useSceneParams()
-  const [dpr, setDpr] = useState(cfg.dpr[1])
+  // recording: full device density, and no fps-based downgrades (the stepped clock reads as 30 fps)
+  const rec = isRec()
+  const [dpr, setDpr] = useState(rec ? devicePixelRatio : cfg.dpr[1])
   const [post, setPost] = useState<boolean>(cfg.post)
   const statsEl = useRef<HTMLDivElement>(null)
 
@@ -58,10 +61,11 @@ export default function CorridorCanvas({ tier, className = '', onReady, onFallba
           bounds={() => [42, 58]}
           flipflops={3}
           onDecline={() => {
+            if (rec) return
             if (post) setPost(false)
             else setDpr((d) => Math.max(1, d - 0.25))
           }}
-          onFallback={() => onFallback?.()}
+          onFallback={() => { if (!rec) onFallback?.() }}
         >
           <Suspense fallback={null}>
             <CorridorEnvironment />

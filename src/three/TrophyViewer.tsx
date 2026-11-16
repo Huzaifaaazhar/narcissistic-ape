@@ -12,6 +12,7 @@ import { StudioEnvironment } from './Lighting'
 import { Post } from './postfx/Post'
 import { SceneStats } from './Stats'
 import { Kick } from './hooks/Kick'
+import { isRec } from '@/lib/rec'
 import { useSceneParams } from './hooks/useSceneParams'
 import { tierConfig, type Tier } from './quality'
 
@@ -44,6 +45,8 @@ type Props = {
   sub?: string
   tier: Exclude<Tier, 'poster'>
   className?: string
+  /** Auto-rotate speed (OrbitControls units). */
+  spin?: number
   /** Lets the parent cross-fade from the poster once the first frame is on screen. */
   onReady?: () => void
 }
@@ -52,7 +55,7 @@ type Props = {
  * Drag to rotate (damped inertia), pinch/scroll to zoom, auto-rotates after 3 s idle.
  * Rendered on a dark stage so the gold reads; the page around it stays paper.
  */
-export default function TrophyViewer({ name, sub, tier, className = '', onReady }: Props) {
+export default function TrophyViewer({ name, sub, tier, className = '', onReady, spin = 0.9 }: Props) {
   const cfg = tierConfig[tier]
   const { freeze, debug } = useSceneParams()
   const [auto, setAuto] = useState(!freeze)
@@ -62,7 +65,7 @@ export default function TrophyViewer({ name, sub, tier, className = '', onReady 
   return (
     <div className={className || 'relative h-full w-full'}>
       <Canvas
-        dpr={cfg.dpr}
+        dpr={isRec() ? devicePixelRatio : cfg.dpr}
         shadows={cfg.shadows}
         frameloop={freeze ? 'demand' : 'always'}
         camera={{ fov: 32, position: [0.36, 0.34, 1.12], near: 0.05, far: 20 }}
@@ -99,7 +102,7 @@ export default function TrophyViewer({ name, sub, tier, className = '', onReady 
             minPolarAngle={Math.PI * 0.2}
             maxPolarAngle={Math.PI * 0.52}
             autoRotate={auto}
-            autoRotateSpeed={0.9}
+            autoRotateSpeed={spin}
             onStart={() => { clearTimeout(idle.current); setAuto(false) }}
             onEnd={() => { idle.current = setTimeout(() => setAuto(true), 3000) }}
           />

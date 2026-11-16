@@ -7,6 +7,7 @@ import { usePlayer } from '@/state/player'
 import { useSettings } from '@/state/settings'
 import { audio } from '@/lib/feedback'
 import { playBeat } from '@/lib/beat'
+import { canvasDpr, isAutoplay, isRec } from '@/lib/rec'
 import { RoundHud, RoundIntro, RoundResults } from './RoundShell'
 import { MusicIcon } from '@/components/icons'
 
@@ -44,8 +45,11 @@ export function DanceRound() {
   const canvas = useRef<HTMLCanvasElement>(null)
   const live = useRef<Live | null>(null)
   const clock = useRef<{ ctx: AudioContext; start: number; latency: number; stop: () => void } | null>(null)
+  /** Recording mode only: song time from the page clock (performance.now, ms) instead of the audio clock. */
+  const pageClockStart = useRef<number | null>(null)
 
   const songTime = () => {
+    if (pageClockStart.current !== null) return (performance.now() - pageClockStart.current) / 1000
     const c = clock.current
     return c ? c.ctx.currentTime - c.start - c.latency : -1
   }
@@ -89,6 +93,8 @@ export function DanceRound() {
     const b = playBeat(ctx, s.music || s.sound ? 0.9 : 0)
     const latency = (ctx as AudioContext & { outputLatency?: number }).outputLatency ?? ctx.baseLatency ?? 0
     clock.current = { ctx, start: b.start, latency, stop: b.stop }
+    // playBeat starts the song 150 ms after now; mirror that on the page clock while recording
+    if (isRec()) pageClockStart.current = performance.now() + 150
     const thirds = [0, 1, 2].map((k) => ({ hits: 0, total: chart.filter((n) => thirdOf(n.t) === k).length }))
     live.current = {
       hit: chart.map(() => false), missed: chart.map(() => false), raw: 0, combo: 0, maxCombo: 0,
@@ -118,7 +124,7 @@ export function DanceRound() {
     const rival = 0.72 * maxPoints(chart)
     const resize = () => {
       const r = c.getBoundingClientRect()
-      const dpr = Math.min(2, devicePixelRatio || 1)
+      const dpr = canvasDpr()
       c.width = r.width * dpr; c.height = r.height * dpr
       g.setTransform(dpr, 0, 0, dpr, 0, 0)
     }
@@ -128,6 +134,16 @@ export function DanceRound() {
     const loop = (now: number) => {
       const L = live.current!
       const t = songTime()
+      // recording-mode autoplayer: mostly perfect, a few early/late hits so it looks human
+      if (isAutoplay()) {
+        for (let i = 0; i < chart.length; i++) {
+          const n = chart[i]!
+          if (n.t > t + 0.05) break
+          if (L.hit[i] || L.missed[i]) continue
+          const jitter = ((i * 37) % 11) / 11 - 0.5 // deterministic −0.5..0.5
+          if (t >= n.t + jitter * 0.07) hitLane(n.lane)
+        }
+      }
       // misses
       for (let i = 0; i < chart.length; i++) {
         const n = chart[i]!
@@ -166,7 +182,7 @@ export function DanceRound() {
     }
     raf = requestAnimationFrame(loop)
     return () => { cancelAnimationFrame(raf); ro.disconnect() }
-  }, [phase, chart, house])
+  }, [phase, chart, house, hitLane])
 
   // stop the music if the player leaves mid-song
   useEffect(() => () => clock.current?.stop(), [])
